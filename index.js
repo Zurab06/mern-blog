@@ -5,6 +5,7 @@ import { validationResult } from 'express-validator'
 import { registrationValidation } from './validations/auth.js'
 import UserModel from './models/User.model.js'
 import bcrypt from 'bcrypt'
+import checkAuth from './middlewares/checkAuth.js'
 const app = express()
 mongoose.connect('mongodb+srv://gaunt0066:Panzerkampf06@cluster0.6m4r7dq.mongodb.net/archakov?retryWrites=true&w=majority')
     .then(() => console.log('mongo connected')).catch((error) => console.log(error))
@@ -52,10 +53,19 @@ app.post('/auth/login', async (req, res) => {
             return res.status(404).json({ message: 'неправильный логин или пароль' })
         }
         const token = jwt.sign({ _id: user._id }, 'secret123', { expiresIn: '2d' })
-        res.json({user,token})
+        res.json({ user, token })
     } catch (error) {
-console.log(error);
-res.status(500).json({message:'не удалось авторизоваться'})
+        console.log(error);
+        res.status(404).json({ message: 'не удалось авторизоваться' })
+    }
+})
+app.get('/auth/me', checkAuth,   (req, res) => {
+    try {
+        res.json({
+            success: true
+        })
+    } catch (error) {
+
     }
 })
 
