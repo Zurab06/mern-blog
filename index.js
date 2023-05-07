@@ -42,11 +42,11 @@ app.post('/auth/registration/', registrationValidation, async (req, res) => {
     }
 })
 
-app.post('/auth/login', async (req, res) => {
+app.post('/auth/login',  async (req, res) => {
     try {
         const user = await UserModel.findOne({ email: req.body.email })
         if (!user) {
-            return res.status(404).json({ message: "пользователь не найден" })
+            return res.status(404).json({ message: "пользователь неee найден" })
         }
         const isValidPass = await bcrypt.compare(req.body.password, user._doc.hashedPassword)
         if (!isValidPass) {
@@ -59,13 +59,17 @@ app.post('/auth/login', async (req, res) => {
         res.status(404).json({ message: 'не удалось авторизоваться' })
     }
 })
-app.get('/auth/me', checkAuth,   (req, res) => {
+app.get('/auth/me', checkAuth, async (req, res) => {
     try {
-        res.json({
-            success: true
-        })
+        const user = await UserModel.findById(req.userId)
+        if (!user) {
+            return res.status(404).json({
+                message: "пользователь не найден"
+            })
+        }
+ res.json(user)
     } catch (error) {
-
+        return
     }
 })
 
