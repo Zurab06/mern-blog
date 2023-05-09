@@ -20,6 +20,6 @@ export default (req, res, next) => {
             message: 'нет доступа'
         })
     }
-    res.send(token)
-    next()
+
+    
 }
