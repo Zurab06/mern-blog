@@ -15,7 +15,8 @@ const PostSchema = new mongoose.Schema({
         type: Number,
         default: 0
     },
-    title: {
+
+    user: {
         type: mongoose.Schema.Types.ObjectId, required: true, ref: 'User'
     },
 
