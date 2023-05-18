@@ -29,10 +29,10 @@ app.post('/auth/login', loginValidation, handleValidationErrors, UserController.
 app.get('/auth/getuser', UserController.getUser)
 
 app.get('/posts', postController.getAll)
-app.post('/posts', checkAuth, postCreateValidation, postController.createPost)
+app.post('/posts', checkAuth, postCreateValidation,handleValidationErrors, postController.createPost)
 app.get('/posts/:id', postController.getOne)
 app.delete('/posts/:id', checkAuth, postController.remove)
-app.patch('/posts/:id', checkAuth, postController.updatePost)
+app.patch('/posts/:id', checkAuth,postCreateValidation,handleValidationErrors, postController.updatePost)
 app.post('/upload', checkAuth, upload.single('image'), (req, res) => {
     res.json({
         url: `/uploads/${req.file.originalname}`
