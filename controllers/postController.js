@@ -2,7 +2,8 @@ import PostModel from '../models/Post.js'
 
 export const getAll = async (req, res) => {
     try {
-        const allPosts = await PostModel.find().populate({ path: "user", select: ["name", "imageUrl"] })
+        // { path: "user", select: ["name", "imageUrl"] }
+        const allPosts = await PostModel.find().populate('user').exec()
         res.json(allPosts)
     } catch (error) {
         console.log(error);
@@ -72,6 +73,7 @@ export const createPost = async (req, res) => {
         res.status(500).json({
             message: 'не удалось создать пост'
         })
+        
     }
 }
 
@@ -97,3 +99,9 @@ export const updatePost = async (req, res) => {
     }
 }
 
+export const getLastTags = async (req,res)=>{
+    const posts = await PostModel.find().limit(5).exec()
+    const tags = posts.map((obj)=>obj.tags).flat().slice(0,5)
+
+    res.json(tags)
+}
