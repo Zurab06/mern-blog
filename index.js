@@ -44,6 +44,7 @@ app.post('/upload', checkAuth, upload.single('image'), (req, res) => {
 
     
 })
+
 app.listen(3004, (err) => {
     if (err) {
         return res.json(err)
